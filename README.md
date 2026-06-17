@@ -1,302 +1,282 @@
-# DCIT 204 Lab 1: Searching Algorithms (Linear Search & Binary Search)
-
-## Overview
-
-Welcome to **DCIT 204 Lab 1**.
-
-The purpose of this lab is to help students understand and implement two fundamental searching algorithms:
-
-1. **Linear Search**
-2. **Binary Search**
-
-You are required to implement both algorithms in Java and demonstrate their functionality through user interaction.
-
----
-
-## Learning Objectives
-
-By the end of this lab, you should be able to:
-
-* Understand how Linear Search works.
-* Understand how Binary Search works.
-* Analyze the differences between the two algorithms.
-* Accept user input in Java.
-* Work with arrays in Java.
-* Write clean and reusable methods.
-* Use Git and GitHub for collaboration.
-
----
-
-## Repository
-
-Repository URL:
-
-`https://github.com/DCIT204-2026/DCIT204_LABS-1.git`
-
----
-
-## Lab Task
-
-You are required to implement:
-
-### 1. Linear Search
-
-Create a method that searches through an array element by element until the target value is found or the end of the array is reached.
-
-### 2. Binary Search
-
-Create a method that searches for a target value in a **sorted array** by repeatedly dividing the search space into halves.
-
----
-
-## Program Requirements
-
-Your program must:
-
-* Allow the user to enter the size of the array.
-* Allow the user to enter the elements of the array.
-* Allow the user to enter the target value to search for.
-* Perform a Linear Search on the array.
-* Perform a Binary Search on the array.
-* Display the search results clearly.
-* Indicate whether the target was found.
-* Display the index position of the target if found.
-
----
-
-## Project Structure
-
-The project contains the following files:
-
-```text
-src/
-│
-├── Algorithm.java
-└── Main.java
-```
-
-### Algorithm.java
-
-This file should contain the implementation of:
-
-```java
-linearSearch(...)
-```
-
-and
-
-```java
-binarySearch(...)
-```
-
-methods.
-
-Example:
-
-```java
+/**
+ * Algorithm class containing implementations of searching algorithms
+ * for DCIT 204 Lab 1
+ */
 public class Algorithm {
 
+    /**
+     * Linear Search - Searches through array element by element
+     * Time Complexity: O(n)
+     * Space Complexity: O(1)
+     * 
+     * @param array The array to search in
+     * @param target The value to search for
+     * @return The index of the target if found, -1 otherwise
+     */
     public static int linearSearch(int[] array, int target) {
-        // Your implementation here
+        // Check if array is null or empty
+        if (array == null || array.length == 0) {
+            return -1;
+        }
+        
+        // Iterate through each element in the array
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == target) {
+                return i; // Target found at index i
+            }
+        }
+        return -1; // Target not found
     }
 
+    /**
+     * Binary Search - Searches in a sorted array by repeatedly dividing search space
+     * Time Complexity: O(log n)
+     * Space Complexity: O(1)
+     * 
+     * @param array The sorted array to search in
+     * @param target The value to search for
+     * @return The index of the target if found, -1 otherwise
+     */
     public static int binarySearch(int[] array, int target) {
-        // Your implementation here
+        // Check if array is null or empty
+        if (array == null || array.length == 0) {
+            return -1;
+        }
+        
+        // Check if array is sorted (Binary Search requires sorted array)
+        if (!isSorted(array)) {
+            System.out.println("Warning: Array is not sorted. Binary Search requires a sorted array.");
+            return -1;
+        }
+        
+        int left = 0;
+        int right = array.length - 1;
+        
+        while (left <= right) {
+            // Calculate middle index to avoid overflow
+            int mid = left + (right - left) / 2;
+            
+            if (array[mid] == target) {
+                return mid; // Target found at index mid
+            }
+            
+            if (array[mid] < target) {
+                left = mid + 1; // Search in the right half
+            } else {
+                right = mid - 1; // Search in the left half
+            }
+        }
+        return -1; // Target not found
     }
 
-}
-```
+    /**
+     * Helper method to check if an array is sorted in ascending order
+     * 
+     * @param array The array to check
+     * @return true if sorted, false otherwise
+     */
+    private static boolean isSorted(int[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-### Main.java
+    /**
+     * Helper method to sort an array using Bubble Sort
+     * This is for demonstration purposes - Binary Search requires sorted input
+     * 
+     * @param array The array to sort
+     */
+    public static void sortArray(int[] array) {
+        if (array == null || array.length <= 1) {
+            return;
+        }
+        
+        int n = array.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    // Swap
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+    }
 
-This file should:
+    /**
+     * Binary Search with optional sorting
+     * 
+     * @param array The array to search in
+     * @param target The value to search for
+     * @param sortFirst If true, sort the array before searching
+     * @return The index of the target if found, -1 otherwise
+     */
+    public static int binarySearch(int[] array, int target, boolean sortFirst) {
+        if (array == null || array.length == 0) {
+            return -1;
+        }
+        
+        // Create a copy to avoid modifying original array if sorting
+        int[] searchArray = array.clone();
+        
+        if (sortFirst) {
+            sortArray(searchArray);
+            System.out.println("Array sorted for Binary Search: " + java.util.Arrays.toString(searchArray));
+        }
+  
+   import java.util.Arrays;
+import java.util.Scanner;
 
-* Collect input from the user.
-* Create the array.
-* Receive the target value.
-* Call the methods in `Algorithm.java`.
-* Display the results.
-
-Example:
-
-```java
+/**
+ * Main class to demonstrate searching algorithms
+ * for DCIT 204 Lab 1
+ */
 public class Main {
 
     public static void main(String[] args) {
-
-        // User input
-
-        // Call Linear Search
-
-        // Call Binary Search
-
-        // Display results
-
+        Scanner scanner = new Scanner(System.in);
+        
+        try {
+            // Step 1: Get array size
+            System.out.print("Enter array size: ");
+            int size = scanner.nextInt();
+            
+            // Validate size
+            while (size <= 0) {
+                System.out.println("Array size must be positive. Please enter again: ");
+                size = scanner.nextInt();
+            }
+            
+            // Step 2: Create array and get elements
+            int[] array = new int[size];
+            System.out.println("Enter array elements:");
+            for (int i = 0; i < size; i++) {
+                System.out.print("Enter element " + (i + 1) + ": ");
+                array[i] = scanner.nextInt();
+            }
+            
+            // Display the original array
+            System.out.println("\nOriginal Array: " + Arrays.toString(array));
+            
+            // Step 3: Get target value
+            System.out.print("\nEnter target value: ");
+            int target = scanner.nextInt();
+            
+            System.out.println("\n" + "=".repeat(50));
+            System.out.println("SEARCH RESULTS");
+            System.out.println("=".repeat(50));
+            
+            // Step 4: Perform Linear Search
+            System.out.println("\nLINEAR SEARCH:");
+            System.out.println("-".repeat(30));
+            long linearStartTime = System.nanoTime();
+            int linearResult = Algorithm.linearSearch(array, target);
+            long linearEndTime = System.nanoTime();
+            long linearTime = linearEndTime - linearStartTime;
+            
+            displaySearchResult("Linear Search", linearResult, array, target, linearTime);
+            
+            // Step 5: Perform Binary Search
+            System.out.println("\nBINARY SEARCH:");
+            System.out.println("-".repeat(30));
+            
+            // Option 1: Check if array is sorted and warn user
+            System.out.println("Performing Binary Search on original array...");
+            long binaryStartTime = System.nanoTime();
+            int binaryResult = Algorithm.binarySearch(array, target);
+            long binaryEndTime = System.nanoTime();
+            long binaryTime = binaryEndTime - binaryStartTime;
+            
+            if (binaryResult == -1 && !Algorithm.isSorted(array)) {
+                System.out.println("Note: Binary Search requires a sorted array.");
+                System.out.println("Current array is not sorted.");
+                System.out.println("\nWould you like to:");
+                System.out.println("1. Sort the array and try Binary Search again");
+                System.out.println("2. Continue without Binary Search");
+                System.out.print("Enter your choice (1 or 2): ");
+                int choice = scanner.nextInt();
+                
+                if (choice == 1) {
+                    // Option 2: Sort and search again
+                    System.out.println("\nSorting array and performing Binary Search...");
+                    int[] sortedArray = array.clone();
+                    Algorithm.sortArray(sortedArray);
+                    System.out.println("Sorted Array: " + Arrays.toString(sortedArray));
+                    
+                    binaryStartTime = System.nanoTime();
+                    binaryResult = Algorithm.binarySearch(sortedArray, target);
+                    binaryEndTime = System.nanoTime();
+                    binaryTime = binaryEndTime - binaryStartTime;
+                    
+                    displaySearchResult("Binary Search (Sorted)", binaryResult, sortedArray, target, binaryTime);
+                } else {
+                    System.out.println("Binary Search skipped.");
+                }
+            } else {
+                displaySearchResult("Binary Search", binaryResult, array, target, binaryTime);
+            }
+            
+            // Step 6: Performance Comparison
+            System.out.println("\n" + "=".repeat(50));
+            System.out.println("PERFORMANCE COMPARISON");
+            System.out.println("=".repeat(50));
+            System.out.printf("Linear Search Time:  %d ns%n", linearTime);
+            System.out.printf("Binary Search Time:  %d ns%n", binaryTime);
+            
+            // Additional analysis if both searches were successful
+            if (linearResult != -1 && binaryResult != -1) {
+                System.out.println("\nBoth algorithms found the target.");
+                if (linearTime > binaryTime) {
+                    System.out.println("Binary Search was faster in this case.");
+                } else if (binaryTime > linearTime) {
+                    System.out.println("Linear Search was faster in this case.");
+                } else {
+                    System.out.println("Both algorithms had similar performance.");
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error: Invalid input. Please enter valid integers.");
+            e.printStackTrace();
+        } finally {
+            scanner.close();
+        }
     }
-
+    
+    /**
+     * Helper method to display search results in a formatted way
+     */
+    private static void displaySearchResult(String algorithmName, int result, int[] array, int target, long time) {
+        if (result != -1) {
+            System.out.printf("✓ Target %d found at index %d%n", target, result);
+            System.out.printf("  Time taken: %d ns%n", time);
+            
+            // Show surrounding elements for context
+            int start = Math.max(0, result - 2);
+            int end = Math.min(array.length - 1, result + 2);
+            System.out.print("  Context: [");
+            for (int i = start; i <= end; i++) {
+                if (i == result) {
+                    System.out.print("[" + array[i] + "] ");
+                } else {
+                    System.out.print(array[i] + " ");
+                }
+            }
+            System.out.println("]");
+        } else {
+            System.out.printf("✗ Target %d not found in the array%n", target);
+            System.out.printf("  Time taken: %d ns%n", time);
+        }
+    }
 }
-```
 
----
 
-## Expected Sample Interaction
 
-```text
-Enter array size: 5
-
-Enter element 1: 10
-Enter element 2: 25
-Enter element 3: 30
-Enter element 4: 45
-Enter element 5: 50
-
-Enter target value: 45
-
-Linear Search Result:
-Target found at index 3
-
-Binary Search Result:
-Target found at index 3
-```
-
----
-
-## Important Note About Binary Search
-
-Binary Search only works correctly on a **sorted array**.
-
-Before performing Binary Search, ensure that the array is sorted.
-
-You may:
-
-* Sort the array before calling Binary Search, or
-* Inform the user that Binary Search requires sorted data.
-
----
-
-## GitHub Workflow
-
-### Step 1: Fork the Repository
-
-Fork the repository to your own GitHub account.
-
-Repository:
-
-`https://github.com/DCIT204-2026/DCIT204_LABS-1.git`
-
----
-
-### Step 2: Clone Your Fork
-
-```bash
-git clone https://github.com/YOUR_USERNAME/DCIT204_LABS-1.git
-```
-
----
-
-### Step 3: Create a New Branch
-
-```bash
-git checkout -b studentID-lab1-solution
-```
-
----
-
-### Step 4: Complete the Task
-
-Implement:
-
-* Linear Search
-* Binary Search
-
-inside `Algorithm.java`.
-
-Use `Main.java` to test your implementation.
-
----
-
-### Step 5: Commit Your Changes
-
-```bash
-git add .
-git commit -m "Implemented Linear Search and Binary Search"
-```
-
----
-
-### Step 6: Push Your Changes
-
-```bash
-git push origin studentID-lab1-solution
-```
-
----
-
-### Step 7: Create a Pull Request
-
-1. Go to your fork on GitHub.
-2. Click **Compare & Pull Request**.
-3. Create a Pull Request to the original repository.
-4. Wait for feedback and review.
-
----
-
-## Submission Guidelines
-
-Your submission will be evaluated based on:
-
-### Functionality (40%)
-
-* Linear Search works correctly.
-* Binary Search works correctly.
-* User input is handled properly.
-
-### Code Quality (25%)
-
-* Readable code.
-* Meaningful variable names.
-* Proper formatting and indentation.
-
-### Algorithm Implementation (25%)
-
-* Correct implementation of both algorithms.
-* Proper use of loops and conditions.
-
-### GitHub Workflow (10%)
-
-* Correct use of Git.
-* Pull Request submitted successfully.
-
----
-
-## Academic Integrity
-
-You are encouraged to discuss concepts with classmates, but all code submitted must be your own work.
-
-Copying another student's solution or submitting code generated entirely by others without understanding it may result in penalties according to course regulations.
-
----
-
-## Deadline
-
-Submit your Pull Request before the announced deadline.
-
-Late submissions may attract penalties unless prior approval has been granted.
-
----
-
-## Deliverables
-
-Before submission, ensure that:
-
-* [ ] Linear Search is implemented.
-* [ ] Binary Search is implemented.
-* [ ] User input is working correctly.
-* [ ] Code compiles successfully.
-* [ ] Changes are committed.
-* [ ] Changes are pushed to GitHub.
-* [ ] Pull Request has been created.
-
----
-
-Good luck, and happy coding!
+        return binarySearch(searchArray, target);
+    }
+}
